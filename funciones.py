@@ -3,7 +3,8 @@ import random
 import datetime
 import json
 
-from main import jason_Existe
+jason_Existe = False
+nombreJason = ""
 #1
 def Traerdatosdesdearchivo():
     with open("Parcial.csv", encoding='utf8') as archivo:
@@ -110,11 +111,11 @@ def JugarBatalla(lista):
     archivo.write(registro)
     archivo.close()
     return resultado
-
 #6
 def GuardarJson(lista):
     global jason_Existe
     resultado = []
+    respuesta = []
     if(jason_Existe == False):
         raza_ingresada = input("Ingrese una raza:")
         habilidad_Ingresada = input("Ingrese una habilidad: ")
@@ -137,7 +138,7 @@ def GuardarJson(lista):
                     concidencias.append(nombres)
 
     concidencias = set(concidencias)
-    print(concidencias)
+    
 
     for jugador in lista:
         #Explicar
@@ -150,20 +151,21 @@ def GuardarJson(lista):
         file.write("\n")
 
     if(concidencia == True):
-        resultado.append(f"Se encontro concidiencia en raza: {raza_ingresada} y habilidad: {habilidad_Ingresada}")
+        respuesta.append(f"Se encontro concidiencia en raza: {raza_ingresada} y habilidad: {habilidad_Ingresada}")
     else:
-        resultado.append("No se encontro condicencia")
+        respuesta.append("No se encontro condicencia")
 
-    return nombreJason,resultado
-
+    resultado.append(respuesta)
+    resultado.append(nombreJason)
+    return resultado
 #7
-def LeerJson(lista):
-    nombreJason = GuardarJson(lista)
-    with open(f"{nombreJason}.json", "r", encoding="utf-8") as j:
+def LeerJson(nombre):
+    with open(f"{nombre}.json", "r", encoding="utf-8") as j:
         datos = json.load(j)
-    # for personaje in datos:
-    #     resultado.append(personaje["Datos"])
     return datos
+
+
+
 
 
         
