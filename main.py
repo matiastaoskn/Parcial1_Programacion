@@ -1,6 +1,6 @@
 from funciones import *
 
-menu = ["--- Dragon Ball ---", "MENU:","1-Listar Cantidad por Raza", "2-Lista Personajes por Raza", "3-Listar Personajes por Habilidad", "4-Jugar Batalla", "5-Guardar Datos en Json", "6-Leer Json", "7-Salir"]
+menu = ["--- Dragon Ball ---", "MENU:","1-Listar Cantidad por Raza", "2-Lista Personajes por Raza", "3-Listar Personajes por Habilidad", "4-Jugar Batalla", "5-Guardar Datos en Json", "6-Leer Json", "7-Extra", "8-Salir del programa"]
 #
 nombreJason = ""
 seguir = "si"
@@ -39,11 +39,14 @@ while seguir == "si":
             else:
                 print("Debe ingresar una Raza y una habilidad [Opcion: 5]")
         case 7:
+            ejExtra(lista_datos)
+        case 8:
             print("Cerrando programa.")
             seguir = "no"
     
     if(seguir == "si"):
         seguir = input("Sigo preguntado?")
+
     
 
 
