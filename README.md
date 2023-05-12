@@ -6,7 +6,7 @@
 - Matias Skenen
 
 
-## colección de personajes de Dragon Ball.
+## Colección de personajes de Dragon Ball.
 
 
 
@@ -16,9 +16,9 @@ ello, disponemos de un archivo CSV
 
 
 ## :GDB: Link al proyecto
-- [proyecto](https://www.tinkercad.com/things/iGZplXy7dOf-primera-entrega-matias-skenen-01-dojo-i/editel?sharecode=xUV1EZMR_iX3sahqaI9wbTSUNm4nuyn2QpeAgWrUPLg)
+- [proyecto]([https://www.tinkercad.com/things/iGZplXy7dOf-primera-entrega-matias-skenen-01-dojo-i/editel?sharecode=xUV1EZMR_iX3sahqaI9wbTSUNm4nuyn2QpeAgWrUPLg](https://onlinegdb.com/NnsOl_9uQ))
 ## :Sugerencias: Link al Word Sugerencias-Prompts
-- [Link-Word]([https://www.youtube.com/watch?v=VyGjE8kx-O0](https://docs.google.com/document/d/15C0PnrEqRYZDG0R3NoC25WacJRhn6YAIDoLJLw9nccA/edit?usp=sharing))
+- [Link-Word]([[https://www.youtube.com/watch?v=VyGjE8kx-O0](https://docs.google.com/document/d/15C0PnrEqRYZDG0R3NoC25WacJRhn6YAIDoLJLw9nccA/edit?usp=sharing)](https://docs.google.com/document/d/15C0PnrEqRYZDG0R3NoC25WacJRhn6YAIDoLJLw9nccA/edit?usp=sharing))
 
 
 ---
