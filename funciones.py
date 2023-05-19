@@ -100,11 +100,15 @@ def JugarBatalla(lista):
     return: Retorna indicaciones sencillas para el usuario sobre el archivo TXT
     """
     i = 0
+    lista_Nombres = []
     for personaje in lista:
         print(f"[{i}]-{personaje['Nombre']}")
         i += 1
+        lista_Nombres.append(personaje['Nombre'])
 
     personja_Ingresado = input("Ingrese el nombre del personaje: ")
+    while(personja_Ingresado not in lista_Nombres):
+        personja_Ingresado = input("Ingreso un valor Invalido. Ingrese el nombre del personaje: ")
     
     for personajes in lista:
         if personja_Ingresado == personajes["Nombre"]:
