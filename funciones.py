@@ -2,9 +2,12 @@ import re
 import random
 import datetime
 import json
+import csv
+
 
 jason_Existe = False
 nombreJason = ""
+lista_De_Jasons = []
 #0
 def Traerdatosdesdearchivo():
     """
@@ -27,7 +30,6 @@ def Traerdatosdesdearchivo():
             lista_nueva.append(diccionario)
         return lista_nueva
 #1
-
 def ListarCantidadporraza(lista):
     """
     Brief: Generamos una nueva lista con el clave "Raza" y se mostraran los respectivos contadores de cada una.
@@ -39,25 +41,11 @@ def ListarCantidadporraza(lista):
     lista_Raza_Formateada = []
     
     for personaje in lista:
-        formato = personaje["Raza"][0]
-        lista_Raza_Formateada.append(formato)
-    
-    #Lista Retornable.
-    razas_Lista = lista_Raza_Formateada
+        lista_Raza_Formateada.append(personaje["Raza"][0])
+        if(len(personaje["Raza"]) > 1):
+            lista_Raza_Formateada.append(personaje["Raza"][1])
 
-    
-    lista_formato = set(lista_Raza_Formateada)
-    
-    resultado = []
-
-    for raza in lista_formato:
-        contador_raza = 0
-        for personaje in lista:
-            if personaje["Raza"][0] == raza:
-                contador_raza +=1
-        resultado.append(f"{raza}: {contador_raza}")
-    
-    return razas_Lista, resultado
+    return lista_Raza_Formateada
 #2
 def ListarPersonajesporraza(lista):
     """
@@ -67,18 +55,18 @@ def ListarPersonajesporraza(lista):
     If: Consulta los valores iterados, si son iguales, se guarda el valor de "Nombre y PoderdePelea"
     return: Retorna la lista de todos los valores obtenidos por cada raza.
     """
-    lista_Razas_Formateada = ListarCantidadporraza(lista)
-    lista_Razas_Formateada = set(lista_Razas_Formateada[0])  
-    
+    lista_Razas_Formateada = ListarCantidadporraza(lista) 
+    lista_Razas_Formateada = set(lista_Razas_Formateada)
+
     resultado = []
     for razas in lista_Razas_Formateada:
         resultado.append("")
         resultado.append(f"Raza: [{razas}]:")
         for personaje in lista:
             if (razas == (personaje["Raza"][0])):
-             resultado.append(f"Nombres: {personaje['Nombre']} | Poder: {personaje['PoderdePelea']}")
-    return resultado   
-#3  
+                resultado.append(f"Nombres: {personaje['Nombre']} | Poder: {personaje['PoderdePelea']}")
+    return resultado
+#3 
 def ListarPersonajesporHabilidad(lista):
     """
     Brief: Genera los nombres y promedio de poder, defensa mediante un filtro que el usuario brinda de "Habilidad".
@@ -87,7 +75,11 @@ def ListarPersonajesporHabilidad(lista):
     If: Consulta los valores iterados, si son iguales, se guarda el valor de "Nombre y Promedio de Ataque y defensa"
     return: Retorna la lista de todos los valores obtenidos por cada raza.
     """
+    for habilidades in lista:
+        print(habilidades["Habilidades"])
+
     valor_Ingresado_filtro = input("Ingrese la Habilidad: ")
+    
     resultado = []
     for personaje in lista:
         habilidades = personaje["Habilidades"]
@@ -107,46 +99,54 @@ def JugarBatalla(lista):
     If: Consulta si el poder del jugador o de la maquina es mas grande que el otro.
     return: Retorna indicaciones sencillas para el usuario sobre el archivo TXT
     """
-    personja_Ingresado = input("Ingrese el nombre del personaje: ")
-    nombre_jugador = personja_Ingresado
-    poder_jugador = 0
-
-    nombre_maquina = ""
-    poder_maquina = 0
-
-    resultado = []
-    numero_aleatorio = random.randint(1, 10)
-
+    i = 0
     for personaje in lista:
-        
-        nombres = personaje["Nombre"]
-        if personja_Ingresado in nombres:
-            nombre_jugador = personja_Ingresado
-            poder_jugador = personaje["PoderdePelea"]
-            
+        print(f"[{i}]-{personaje['Nombre']}")
+        i += 1
 
-        id = personaje["ID"]
-        if numero_aleatorio == id:
-            nombre_maquina = personaje["Nombre"]
-            poder_maquina = personaje["PoderdePelea"]
-            
+    personja_Ingresado = input("Ingrese el nombre del personaje: ")
     
-    if(poder_jugador > poder_maquina):
-        ganador = "Jugador"
-        ganador_Nombre = nombre_jugador
-        perdedor_Nombre = nombre_maquina
-    else:
-        ganador = "Maquina"
-        ganador_Nombre = nombre_maquina
-        perdedor_Nombre = nombre_jugador
+    for personajes in lista:
+        if personja_Ingresado == personajes["Nombre"]:
+            nombre_jugador = personja_Ingresado
+            poder_jugador = 0    
 
-    fecha = datetime.date.today()
-    hora_actual = datetime.datetime.now().strftime("%I:%M %p")
-    registro = (f"El ganador del juego: '{ganador}', Nombre: {ganador_Nombre}, Perdedor: {perdedor_Nombre} Fecha: {fecha}, Hora: {hora_actual}")
-    archivo = open("Registro.txt", "a")
-    archivo.write(registro)
-    archivo.close()
-    return resultado
+            nombre_maquina = ""
+            poder_maquina = 0
+
+            resultado = []
+            numero_aleatorio = random.randint(1, 10)
+
+            for personaje in lista:
+                
+                nombres = personaje["Nombre"]
+                if personja_Ingresado == nombres:
+                    nombre_jugador = personja_Ingresado
+                    poder_jugador = personaje["PoderdePelea"]
+                    
+
+                id = personaje["ID"]
+                if numero_aleatorio == id:
+                    nombre_maquina = personaje["Nombre"]
+                    poder_maquina = personaje["PoderdePelea"]
+                    
+            
+            if(poder_jugador > poder_maquina):
+                ganador = "Jugador"
+                ganador_Nombre = nombre_jugador
+                perdedor_Nombre = nombre_maquina
+            else:
+                ganador = "Maquina"
+                ganador_Nombre = nombre_maquina
+                perdedor_Nombre = nombre_jugador
+
+            fecha = datetime.date.today()
+            hora_actual = datetime.datetime.now().strftime("%I:%M %p")
+            registro = (f"El ganador del juego: '{ganador}', Nombre: {ganador_Nombre}, Perdedor: {perdedor_Nombre} Fecha: {fecha}, Hora: {hora_actual}\n")
+            archivo = open("Registro.txt", "a")
+            archivo.write(registro)
+            archivo.close()
+            return resultado
 #5
 def GuardarJson(lista):
     """
@@ -156,47 +156,67 @@ def GuardarJson(lista):
     If: Consulta la identidad de "Razas" y la identidad de sus habilidades con las encontradas mediante el primer IF
     return: Retorna el nombre del archivo.json y retorna una indicacion simple para el usuario.
     """
-    global jason_Existe
-    resultado = []
-    respuesta = []
-    concidencia = False
-    if(jason_Existe == False):
-        raza_ingresada = input("Ingrese una raza:")
-        habilidad_Ingresada = input("Ingrese una habilidad: ")
-        jason_Existe = True
-        nombreJason = (f"{raza_ingresada}_{habilidad_Ingresada}")
+    
+    lista_razas = ListarCantidadporraza(lista)
+    lista_razas = set(lista_razas)
+    i = 0
+    
+    for razas in lista_razas:
+        print(f"[{i}]-Raza:{razas}")
+        i += 1
 
-    lista_formato = ListarCantidadporraza(lista)
-    concidencias = []
-    datos = []
-    for personaje in lista_formato:
-        raza = personaje
-        if raza_ingresada in raza:
-            for personaje in lista:
-                habilidades = personaje["Habilidades"]
-                if (habilidad_Ingresada in habilidades):
-                    concidencia = True
-                    nombres = personaje["Nombre"]
-                    concidencias.append(nombres)
+    lista_Formato_Habilidades = []
 
-    concidencias = set(concidencias)  
+    #Validacion de Raza y lista de Razas
+    raza_ingresada = input("Ingrese una raza:")
+    while(raza_ingresada not in lista_razas):
+        raza_ingresada = input("Ingreso una raza invalida. Ingrese una raza:")
+    
+    #Validacion y lista de Habilidades
+    for habilidad in lista:
+        lista_Habilidades = habilidad["Habilidades"]
+        for habilidad in lista_Habilidades:
+            print(f"[{i}]-Habilidades:{habilidad}")
 
-    for jugador in lista:
-        habilidades = " + ".join(jugador["Habilidades"])
-        if(jugador["Nombre"] in concidencias):
-            datos.append({"Datos": f"{jugador['Nombre']} - {jugador['PoderdePelea']} - {habilidades}"})
-    with open(f"{raza_ingresada}_{habilidad_Ingresada}.json", "a", encoding="utf-8") as file:
-        json.dump(datos, file, ensure_ascii=False)
-        file.write("\n")
+   #Formato para la lista de habilidades y facilidad para el usuario.
+    habilidad_Ingresada = input("Ingrese una habilidad: ")
+    for personaje in lista:
+        for habilidad in personaje["Habilidades"]:
+            lista_Formato_Habilidades.append(habilidad.replace(" ", "").lower())
+    while(habilidad_Ingresada not in lista_Formato_Habilidades):
+        habilidad_Ingresada = input("Ingreso una habilidad invalida. Ingrese una habilidad: ")
 
-    if(concidencia == True):
-        respuesta.append(f"Se encontro concidiencia en raza: {raza_ingresada} y habilidad: {habilidad_Ingresada}")
-    else:
-        respuesta.append("No se encontro condicencia")
+    nombreDelJason = (f"{raza_ingresada}_{habilidad_Ingresada}")
+    lista_De_Jasons.append(nombreDelJason)
 
-    resultado.append(respuesta)
-    resultado.append(nombreJason)
-    return resultado
+    for personaje in lista:
+            nombreJason = (f"{raza_ingresada}_{habilidad_Ingresada}")
+            lista_Raza_Formateada = ListarCantidadporraza(lista)
+
+            concidencias = []
+            datos = []
+
+            for razas in lista_Raza_Formateada:
+                raza = razas
+                if raza_ingresada in raza:
+                    for personaje in lista:
+                        habilidades = personaje["Habilidades"]
+                        if (habilidad_Ingresada in habilidades):
+                            nombres = personaje["Nombre"]
+                            concidencias.append(nombres)
+
+            concidencias = set(concidencias)  
+
+            for jugador in lista:
+                habilidades = " + ".join(jugador["Habilidades"])
+                if(jugador["Nombre"] in concidencias):
+                    datos.append({"Datos": f"{jugador['Nombre']} - {jugador['PoderdePelea']} - {habilidades}\n"})
+            with open(f"{nombreDelJason}.json", "a", encoding="utf-8") as file:
+                json.dump(datos, file, ensure_ascii=False)
+                file.write("\n")
+
+                
+            return nombreJason
 #6
 def LeerJson(nombre):
     """
@@ -207,7 +227,6 @@ def LeerJson(nombre):
         datos = json.load(j)
     return datos
 #7
-
 def ejExtra(lista):
     with open("nuevo.csv", "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
@@ -219,8 +238,8 @@ def ejExtra(lista):
             
             if filtro == razas:
                 nombre = personaje['Nombre']
-                poder_Pelea = int(personaje["PoderdePelea"]) * 1.5
-                poderAtaque = int(personaje["PoderdeDefensa"]) * 1.7
+                poder_Pelea = int(personaje["PoderdePelea"]) * 0.5
+                poderAtaque = int(personaje["PoderdeDefensa"]) * 0.7
             
                 for habilidad in personaje["Habilidades"]:
                     lista_habilidades.append(habilidad)
@@ -230,5 +249,4 @@ def ejExtra(lista):
                 writer.writerow([nombre])
                 writer.writerow([poder_Pelea])
                 writer.writerow([poderAtaque])
-
 
