@@ -4,6 +4,9 @@ menu = ["--- Dragon Ball ---", "MENU:","1-Listar Cantidad por Raza", "2-Lista Pe
 #
 nombreJason = ""
 seguir = "si"
+jason_Existe = False
+jasonCreados = []
+
 for opciones in menu:
     print(opciones)
 while seguir == "si":
@@ -12,8 +15,13 @@ while seguir == "si":
     match respuesta:
         case 1:
             resultado = ListarCantidadporraza(lista_datos)
-            for raza in resultado[1]:
-                print(raza)
+            formato = set(resultado)
+            for raza in formato:
+                contador_raza = 0
+                for personaje in lista_datos:
+                    if personaje["Raza"][0] == raza:
+                        contador_raza +=1
+                print(f"{raza}: {contador_raza}")
         case 2:
             resultado = ListarPersonajesporraza(lista_datos)
             for razas in resultado:
@@ -24,20 +32,29 @@ while seguir == "si":
                 print(habilidad)
         case 4:
             resultado = JugarBatalla(lista_datos)
-            for ganador in resultado:
-                print(ganador)
+            if resultado == None:
+                print("No existe el personaje")
+            else:
+                if (len(resultado) > 0):   
+                    for ganador in resultado:
+                        print(ganador)
+                print("Se genero un archivo TXT")
         case 5:
             resultado = GuardarJson(lista_datos)
-            print(resultado[0])
-            nombreJason = resultado[1]
+            #nombreJason = resultado
+            jasonCreados.append(resultado)
             jason_Existe = True
         case 6:
-            if(jason_Existe == True):
-                resultado = LeerJson(nombreJason)
-                for datos in resultado:
-                    print(datos["Datos"])
-            else:
-                print("Debe ingresar una Raza y una habilidad [Opcion: 5]")
+            i = 0
+            if(len(jasonCreados) > 0):
+                for jsons in jasonCreados:
+                    print(f"[{i}]{jsons}")
+                    i += 1
+            opciones = int(input("Ingrese una opcion: "))
+            nombreJason = jasonCreados[opciones]
+            resultado = LeerJson(nombreJason)
+            for datos in resultado:
+                print(datos)
         case 7:
             ejExtra(lista_datos)
         case 8:
